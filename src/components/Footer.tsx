@@ -12,7 +12,9 @@ export const Footer = () => {
             href="/"
             className="font-bold text-xl flex items-center text-black"
           >
-            <LogoIcon className="mr-2" />
+            <span className="mr-2">
+                <LogoIcon />
+            </span>
             Leadhunter
           </a>
         </div>
