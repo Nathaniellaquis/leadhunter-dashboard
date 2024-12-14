@@ -1,12 +1,9 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+// src/contexts/PublicRoute.tsx
+import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from './AuthContext';
+import PublicTopbar from '@/modules/PublicTopbar';
 
-interface PublicRouteProps {
-  children: React.ReactNode;
-}
-
-export function PublicRoute({ children }: PublicRouteProps) {
+export function PublicRoute({ children }: { children?: React.ReactNode }) {
   const { currentUser, loading } = useAuth();
 
   if (loading) return null;
@@ -15,5 +12,10 @@ export function PublicRoute({ children }: PublicRouteProps) {
     return <Navigate to="/home" />;
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      <PublicTopbar />
+      {children ? children : <Outlet />}
+    </>
+  );
 }

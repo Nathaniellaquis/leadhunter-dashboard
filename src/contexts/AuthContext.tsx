@@ -12,10 +12,14 @@ import {
 import { auth } from '../firebase';
 
 interface UserData {
-  _id: string;
-  email: string;
-  authMethod: string;
-  createdAt: string;
+    _id: string;
+    email: string;
+    authMethod: string;
+    createdAt: string;
+    plan: string;
+    uid: string; // add this if backend returns uid
+    creditsRemaining: number; // add this if backend returns creditsRemaining
+    isBuyer: boolean;
 }
 
 interface AuthContextProps {
@@ -136,7 +140,40 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     setCurrentUser(user);
     setAccessToken(token);
-    await fetchUserData(user.uid, token);
+
+    const headers = await getAuthHeaders(token);
+    const response = await fetch(`${API_BASE_URL}/get-user-by-uid?uid=${user.uid}`, {
+      headers,
+    });
+
+    if (response.ok) {
+      // User exists
+      const existingUserData: UserData = await response.json();
+      setUserData(existingUserData);
+    } else if (response.status === 404) {
+      // User does not exist, create them
+      const createUserResponse = await fetch(`${API_BASE_URL}/create-user`, {
+        method: 'POST',
+        headers: await getAuthHeaders(token),
+        body: JSON.stringify({
+          email,
+          uid: user.uid,
+          authMethod: 'email',
+        }),
+      });
+
+      if (!createUserResponse.ok) {
+        console.error('Failed to create user in backend. Status:', createUserResponse.status);
+        throw new Error('Failed to create user in backend');
+      }
+
+      const newUserData: UserData = await createUserResponse.json();
+      setUserData(newUserData);
+    } else {
+      console.error('Failed to fetch user. Status:', response.status);
+      throw new Error('Failed to fetch user');
+    }
+
     setLoading(false);
   };
 
@@ -194,24 +231,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { user } = userCredential;
     const { uid } = user;
     const token = await user.getIdToken();
-
+  
     setCurrentUser(user);
     setAccessToken(token);
-
+  
     const headers = await getAuthHeaders(token);
     const response = await fetch(`${API_BASE_URL}/get-user-by-uid?uid=${uid}`, {
       headers,
     });
-
+  
     if (response.ok) {
       const existingUserData: UserData = await response.json();
       setUserData(existingUserData);
     } else if (response.status === 404) {
-      console.error('User not found in backend.');
+      console.error('User not found in backend. Logging out and showing a message.');
       await signOut(auth);
       setCurrentUser(null);
       setAccessToken(null);
       setUserData(null);
+      alert('User does not exist. Please sign up first.');
       throw new Error('User does not exist. Please sign up first.');
     } else {
       console.error('Failed to fetch user. Status:', response.status);

@@ -1,5 +1,7 @@
+// src/contexts/PrivateRoute.tsx
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from './AuthContext';
+import PrivateTopbar from '@/modules/PrivateTopbar';
 
 export function PrivateRoute() {
   const { currentUser, loading } = useAuth();
@@ -10,5 +12,10 @@ export function PrivateRoute() {
     return <Navigate to="/login" />;
   }
 
-  return <Outlet />;
+  return (
+    <>
+      <PrivateTopbar />
+      <Outlet />
+    </>
+  );
 }
