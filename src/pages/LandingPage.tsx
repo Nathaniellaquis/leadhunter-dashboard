@@ -1,16 +1,15 @@
-import React from 'react';
 
-import { Hero } from "../components/Hero";
-import { Sponsors } from "../components/Sponsors";
+import { Hero } from "../components/Hero.tsx";
+import { Sponsors } from "../components/Sponsors.tsx";
 import { About } from "../components/About";
-import { HowItWorks } from "../components/HowItWorks";
+import { HowItWorks } from "../components/HowItWorks.tsx";
 import { Features } from "../components/Features";
-import { Services } from "../components/Services";
+import { Services } from "../components/Services.tsx";
 import { Testimonials } from "../components/Testimonials";
 import { Team } from "../components/Team";
 import { Pricing } from "../components/Pricing";
 import { FAQ } from "../components/FAQ";
-import { Footer } from "../components/Footer";
+import { Footer } from "../components/Footer.tsx";
 
 export default function LandingPage() {
   return (

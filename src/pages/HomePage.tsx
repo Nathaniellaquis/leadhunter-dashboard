@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiSearch } from 'react-icons/fi';
 
@@ -64,7 +64,6 @@ export default function HomePage() {
                 }
                 // Navigate to the platform page
                 // For example: /platform/instagram
-                const route = platform.route.replace('/platform/', '/platform/'); 
                 // route is already correct, just an example step
                 navigate(platform.route);
               }}

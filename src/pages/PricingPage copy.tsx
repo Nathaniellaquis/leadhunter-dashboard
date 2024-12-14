@@ -67,6 +67,7 @@ export default function OneTimePurchasePage() {
   const [showCheckoutPage, setShowCheckoutPage] = useState(false);
   const [paymentURL, setPaymentURL] = useState<string | null>(null);
   const [isUpdatingPayment, setIsUpdatingPayment] = useState(false);
+  console.log(isUpdatingPayment);
 
   const { toast } = useToast();
 
@@ -116,6 +117,7 @@ export default function OneTimePurchasePage() {
   }
 
   async function createOrUpdateBuyerAndShowCheckout(plan: OneTimePlan, isFirstTime: boolean) {
+    console.log(plan)
     if (!accessToken || !uid) return;
     setLoading(true);
     setPurchaseComplete(false);

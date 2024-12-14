@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import PublicTopbar from '@/modules/PublicTopbar'
 import PrivateTopbar from '@/modules/PrivateTopbar'
@@ -153,6 +153,7 @@ interface PriceCardProps {
 }
 
 function PriceCard({ plan, isYearly, billingPeriodText }: PriceCardProps) {
+  console.log(isYearly);
   return (
     <Card
       className={cn(

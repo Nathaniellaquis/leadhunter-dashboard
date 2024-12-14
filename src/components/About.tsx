@@ -1,6 +1,5 @@
-import React from "react";
 import pilot from "@/assets/pilot.png";
-import { Statistics } from "./Statistics";
+import { Statistics } from "./Statistics.tsx";
 
 export const About = () => {
   return (
